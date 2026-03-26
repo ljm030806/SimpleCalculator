@@ -19,7 +19,7 @@ namespace SimpleCalculator
         {
             InitializeComponent();
 
-            // 텍스트박스 읽기 전용 및 색상 지정 (커서/클릭 방지)
+            // 텍스트박스 읽기 전용 및 색상 지정
             txt_Cause.ReadOnly = true;
             txt_Result.ReadOnly = true;
 
@@ -28,6 +28,12 @@ namespace SimpleCalculator
             
             txt_Cause.TabStop = false;
             txt_Result.TabStop = false;
+
+            // ===== 포커스 숨기기 (커서, 드래그 방지) =====
+            txt_Cause.Enter += TextBox_Enter;
+            txt_Result.Enter += TextBox_Enter;
+            txt_Cause.GotFocus += TextBox_Enter;
+            txt_Result.GotFocus += TextBox_Enter;
 
             // 숫자 버튼 이벤트 일괄 연결
             btn_Input0.Click += NumberButton_Click;
@@ -43,6 +49,10 @@ namespace SimpleCalculator
 
             // 추가 기능 버튼 이벤트
             btn_ChangeSign.Click += btn_ChangeSign_Click; // 1번: +/- 부호 변경
+
+            // === 괄호 버튼 이벤트 연결 추가 ===
+            btn_Parenthesis1.Click += btn_Parenthesis1_Click; // '(' 버튼
+            btn_Parenthesis2.Click += btn_Parenthesis1_Click; // ')' 버튼
 
             // 사칙연산 버튼 이벤트 연결
             btn_Plus.Click += OperatorButton_Click;
@@ -60,6 +70,99 @@ namespace SimpleCalculator
             _errorResetTimer = new System.Windows.Forms.Timer();
             _errorResetTimer.Interval = 1000;
             _errorResetTimer.Tick += ErrorResetTimer_Tick;
+
+            // 키보드 입력을 최우선으로 가로채기 활성화
+            this.KeyPreview = true;
+            this.KeyDown += Calculator_KeyDown;
+            
+            // 폼 아무 곳이나 클릭해도 포커스를 폼 자체로 유지
+            this.Click += TextBox_Enter;
+        }
+
+        // ===== 텍스트박스 포커스 방지 이벤트 =====
+        private void TextBox_Enter(object? sender, EventArgs e)
+        {
+            this.ActiveControl = null;
+            this.Focus();
+        }
+
+        // ===== Enter 키 등 특수키 가로채기 최우선 방어막 =====
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // 조합키 필터링 (순수 누름 감별)
+            Keys baseKey = keyData & Keys.KeyCode;
+            
+            if (baseKey == Keys.Enter)
+            {
+                btn_InputEquals.PerformClick();
+                return true; 
+            }
+            else if (baseKey == Keys.Back)
+            {
+                btn_Del.PerformClick();
+                return true;
+            }
+            else if (baseKey == Keys.Escape)
+            {
+                btn_C.PerformClick();
+                return true;
+            }
+            else if (baseKey == Keys.Delete)
+            {
+                btn_CE.PerformClick();
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        // 키보드 입력 가로채기 (위에서 해결 안된 나머지 키들)
+        private void Calculator_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.Shift)
+            {
+                if (e.KeyCode == Keys.Oemplus || e.KeyCode == Keys.Add)
+                    btn_Plus.PerformClick();
+                else if (e.KeyCode == Keys.D8 || e.KeyCode == Keys.Multiply)
+                    btn_Multiplication.PerformClick();
+                // 🌟 추가된 부분: 키보드로 괄호 (, ) 입력 처리
+                else if (e.KeyCode == Keys.D9)
+                    btn_Parenthesis1.PerformClick(); // '(' 버튼 (Shift + 9)
+                else if (e.KeyCode == Keys.D0)
+                    btn_Parenthesis2.PerformClick(); // ')' 버튼 (Shift + 0)
+                
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            switch (e.KeyCode)
+            {
+                case Keys.D0: case Keys.NumPad0: btn_Input0.PerformClick(); break;
+                case Keys.D1: case Keys.NumPad1: btn_Input1.PerformClick(); break;
+                case Keys.D2: case Keys.NumPad2: btn_Input2.PerformClick(); break;
+                case Keys.D3: case Keys.NumPad3: btn_Input3.PerformClick(); break;
+                case Keys.D4: case Keys.NumPad4: btn_Input4.PerformClick(); break;
+                case Keys.D5: case Keys.NumPad5: btn_Input5.PerformClick(); break;
+                case Keys.D6: case Keys.NumPad6: btn_Input6.PerformClick(); break;
+                case Keys.D7: case Keys.NumPad7: btn_Input7.PerformClick(); break;
+                case Keys.D8: case Keys.NumPad8: btn_Input8.PerformClick(); break;
+                case Keys.D9: case Keys.NumPad9: btn_Input9.PerformClick(); break;
+                case Keys.Add: case Keys.Oemplus: btn_Plus.PerformClick(); break; 
+                case Keys.Subtract: case Keys.OemMinus: btn_Minus.PerformClick(); break; 
+                case Keys.Multiply: btn_Multiplication.PerformClick(); break; 
+                case Keys.Divide: case Keys.OemQuestion: btn_Division.PerformClick(); break;
+                case Keys.Decimal: case Keys.OemPeriod: 
+                    button3_Click(this, EventArgs.Empty);
+                    break;
+            }
+            
+            // 키보드 기본 비프음 등 차단
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+            
+            // 포커스 무조건 폼으로 돌려놓기 (어디선가 훔쳐갔을 경우 대비)
+            this.ActiveControl = null;
         }
 
         // 공통 숫자 버튼 클릭 이벤트 핸들러
@@ -143,7 +246,7 @@ namespace SimpleCalculator
             if (_isCalculated)
             {
                 txt_Cause.Text = "0.";
-                txt_Result.Text = "0.";
+                txt_Result.Text = "0."; // '0>' 를 '0.' 으로 수정
                 _isCalculated = false;
                 _isNewEntry = false;
                 return;
@@ -177,72 +280,88 @@ namespace SimpleCalculator
                     _isCalculated = false;
                 }
 
-                txt_Cause.Text += $" {btn.Text} ";
-
-                if (!_isNewEntry && _currentOperator != "")
+                // 기호 이전에 아무 숫자도 없다면 0부터 시작하도록 처리
+                if (_isNewEntry && string.IsNullOrEmpty(txt_Cause.Text))
                 {
-                    double.TryParse(txt_Result.Text, out double tempOperand);
-                    switch (_currentOperator)
-                    {
-                        case "+": _firstOperand += tempOperand; break;
-                        case "-": _firstOperand -= tempOperand; break;
-                        case "X": case "*": _firstOperand *= tempOperand; break;
-                        case "÷": case "/": 
-                            // 4번: 여기서도 0으로 나누려 하면 잠시 후 진행
-                            if (tempOperand == 0) 
-                            {
-                                ShowDivideByZeroError();
-                                return;
-                            }
-                            _firstOperand /= tempOperand;
-                            break;
-                    }
-                    txt_Result.Text = _firstOperand.ToString();
+                    txt_Cause.Text = txt_Result.Text;
+                }
+
+                string op = btn.Text;
+
+                // 이미 연산자가 입력된 상태에서 다른 연산자를 눌렀을 때 기호 덮어쓰기
+                if (_isNewEntry && txt_Cause.Text.Length >= 3 && 
+                    (txt_Cause.Text.EndsWith(" + ") || txt_Cause.Text.EndsWith(" - ") || 
+                     txt_Cause.Text.EndsWith(" X ") || txt_Cause.Text.EndsWith(" * ") || 
+                     txt_Cause.Text.EndsWith(" ÷ ") || txt_Cause.Text.EndsWith(" / ")))
+                {
+                    txt_Cause.Text = txt_Cause.Text.Substring(0, txt_Cause.Text.Length - 3) + $" {op} ";
                 }
                 else
                 {
-                    double.TryParse(txt_Result.Text, out _firstOperand);
+                    txt_Cause.Text += $" {op} ";
                 }
 
-                _currentOperator = btn.Text;
+                _currentOperator = op;
                 _isNewEntry = true;
+                
+                // 주의: 연산자 간 우선순위 처리를 위해 여기서 곧바로 계산하지 않고 식만 계속 이어 나갑니다.
             }
         }
 
         // 등호(=) 버튼
         private void EqualsButton_Click(object? sender, EventArgs e)
         {
-            if (_currentOperator == "") return;
+            // 수식이 아예 비어있거나 "0"인 경우에만 계산 무시
+            if (string.IsNullOrWhiteSpace(txt_Cause.Text) || txt_Cause.Text == "0") return;
 
-            if (double.TryParse(txt_Result.Text, out double secondOperand))
+            try
             {
-                double result = 0;
+                string expression = txt_Cause.Text;
 
-                switch (_currentOperator)
+                // 1. 계산 가능한 기호로 변환 (X -> *, ÷ -> /)
+                string computeExpr = expression.Replace("X", "*").Replace("÷", "/");
+
+                // 🌟 추가된 부분: 생략된 곱셈 기호 추가 (숫자와 괄호, 괄호와 숫자, 괄호와 괄호 사이)
+                computeExpr = System.Text.RegularExpressions.Regex.Replace(computeExpr, @"(\d)\s*\(", "$1 * (");
+                computeExpr = System.Text.RegularExpressions.Regex.Replace(computeExpr, @"\)\s*(\d)", ") * $1");
+                computeExpr = System.Text.RegularExpressions.Regex.Replace(computeExpr, @"\)\s*\(", ") * (");
+
+                // 2. 정수 나눗셈 시 소수점을 잃어버리는 현상 방지:
+                // 식에 포함된 모든 정수(예: 3)를 실수형태(예: 3.0)로 변환 (정규표현식 활용)
+                computeExpr = System.Text.RegularExpressions.Regex.Replace(computeExpr, @"(?<!\.)\b\d+\b(?!\.)", "$0.0");
+
+                // 3. 0으로 나누기 예외 처리
+                if (computeExpr.Contains("/ 0.0") || computeExpr.Contains("/0.0") || computeExpr.Contains("/ 0") || computeExpr.Contains("/0"))
                 {
-                    case "+": result = _firstOperand + secondOperand; break;
-                    case "-": result = _firstOperand - secondOperand; break;
-                    case "X":
-                    case "*": result = _firstOperand * secondOperand; break;
-                    case "÷":
-                    case "/":
-                        // 4번: 0으로 나누기 방지 & 에러 텍스트 & 버튼 잠금 처리
-                        if (secondOperand == 0)
-                        {
-                            ShowDivideByZeroError();
-                            return;
-                        }
-                        result = _firstOperand / secondOperand;
-                        break;
+                    ShowDivideByZeroError();
+                    return;
+                }
+
+                // 4. 연산자 우선순위가 자동 적용되는 DataTable.Compute 활용
+                System.Data.DataTable table = new System.Data.DataTable();
+                object evaluateResult = table.Compute(computeExpr, "");
+                double result = Convert.ToDouble(evaluateResult);
+
+                // 무한대 에러 처리 방어
+                if (double.IsInfinity(result) || double.IsNaN(result))
+                {
+                    ShowDivideByZeroError();
+                    return;
                 }
 
                 txt_Result.Text = result.ToString();
-                txt_Cause.Text += $" = {result}";
+                txt_Cause.Text = $"{expression} = {result}";
                 
                 _firstOperand = result;
                 _currentOperator = ""; 
                 _isNewEntry = true;    
                 _isCalculated = true;  
+            }
+            catch (Exception)
+            {
+                // 잘못된 수식이나 에러 발생 시 처리
+                txt_Result.Text = "Error";
+                _isNewEntry = true;
             }
         }
 
@@ -322,8 +441,34 @@ namespace SimpleCalculator
             }
         }
          
-        private void button15_Click(object sender, EventArgs e)
+        private void button15_Click(object sender, EventArgs e) { }
+
+        // 괄호 버튼 클릭 이벤트 핸들러
+        private void btn_Parenthesis1_Click(object? sender, EventArgs e)
         {
+            Button? btn = sender as Button;
+            if (btn != null)
+            {
+                // 방금 '='로 계산이 끝난 상태라면 화면을 초기화하고 수식을 새로 시작합니다.
+                if (_isCalculated)
+                {
+                    txt_Cause.Text = "";
+                    txt_Result.Text = "0";
+                    _isCalculated = false;
+                }
+
+                // 수식 창이 0이거나 비어있을 때는 기존 0을 지우고 괄호를 넣습니다.
+                if (txt_Cause.Text == "0" || string.IsNullOrEmpty(txt_Cause.Text))
+                {
+                    txt_Cause.Text = btn.Text;
+                }
+                else
+                {
+                    txt_Cause.Text += btn.Text;
+                }
+
+                _isNewEntry = true;
+            }
         }
     }
 }

@@ -52,6 +52,8 @@
             btn_InputEquals = new Button();
             label1 = new Label();
             txt_Result = new TextBox();
+            btn_Parenthesis2 = new Button();
+            btn_Parenthesis1 = new Button();
             SuspendLayout();
             // 
             // lblName
@@ -250,7 +252,7 @@
             // btn_ChangeSign
             // 
             btn_ChangeSign.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            btn_ChangeSign.Location = new Point(48, 400);
+            btn_ChangeSign.Location = new Point(48, 397);
             btn_ChangeSign.Name = "btn_ChangeSign";
             btn_ChangeSign.Size = new Size(68, 41);
             btn_ChangeSign.TabIndex = 19;
@@ -282,7 +284,7 @@
             // btn_InputEquals
             // 
             btn_InputEquals.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            btn_InputEquals.Location = new Point(270, 400);
+            btn_InputEquals.Location = new Point(270, 397);
             btn_InputEquals.Name = "btn_InputEquals";
             btn_InputEquals.Size = new Size(68, 41);
             btn_InputEquals.TabIndex = 22;
@@ -305,11 +307,34 @@
             txt_Result.Size = new Size(290, 35);
             txt_Result.TabIndex = 24;
             // 
+            // btn_Parenthesis2
+            // 
+            btn_Parenthesis2.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Parenthesis2.Location = new Point(235, 442);
+            btn_Parenthesis2.Name = "btn_Parenthesis2";
+            btn_Parenthesis2.Size = new Size(68, 41);
+            btn_Parenthesis2.TabIndex = 25;
+            btn_Parenthesis2.Text = ")";
+            btn_Parenthesis2.UseVisualStyleBackColor = true;
+            // 
+            // btn_Parenthesis1
+            // 
+            btn_Parenthesis1.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Parenthesis1.Location = new Point(79, 442);
+            btn_Parenthesis1.Name = "btn_Parenthesis1";
+            btn_Parenthesis1.Size = new Size(68, 41);
+            btn_Parenthesis1.TabIndex = 26;
+            btn_Parenthesis1.Text = "(";
+            btn_Parenthesis1.UseVisualStyleBackColor = true;
+            btn_Parenthesis1.UseWaitCursor = true;
+            // 
             // Calculator
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(431, 450);
+            ClientSize = new Size(500, 495);
+            Controls.Add(btn_Parenthesis1);
+            Controls.Add(btn_Parenthesis2);
             Controls.Add(txt_Result);
             Controls.Add(label1);
             Controls.Add(btn_InputEquals);
@@ -366,5 +391,7 @@
         private Button btn_InputEquals;
         private Label label1;
         private TextBox txt_Result;
+        private Button btn_Parenthesis2;
+        private Button btn_Parenthesis1;
     }
 }
