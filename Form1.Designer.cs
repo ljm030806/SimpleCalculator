@@ -106,6 +106,7 @@
             // btn_Division
             // 
             btn_Division.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Division.ForeColor = Color.Red;
             btn_Division.Location = new Point(270, 212);
             btn_Division.Name = "btn_Division";
             btn_Division.Size = new Size(68, 41);
@@ -116,6 +117,7 @@
             // btn_Input7
             // 
             btn_Input7.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Input7.ForeColor = Color.Blue;
             btn_Input7.Location = new Point(48, 259);
             btn_Input7.Name = "btn_Input7";
             btn_Input7.Size = new Size(68, 41);
@@ -126,6 +128,7 @@
             // btn_Input8
             // 
             btn_Input8.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Input8.ForeColor = Color.Blue;
             btn_Input8.Location = new Point(122, 259);
             btn_Input8.Name = "btn_Input8";
             btn_Input8.Size = new Size(68, 41);
@@ -136,6 +139,7 @@
             // btn_Input9
             // 
             btn_Input9.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Input9.ForeColor = Color.Blue;
             btn_Input9.Location = new Point(196, 259);
             btn_Input9.Name = "btn_Input9";
             btn_Input9.Size = new Size(68, 41);
@@ -146,6 +150,7 @@
             // btn_Multiplication
             // 
             btn_Multiplication.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Multiplication.ForeColor = Color.Red;
             btn_Multiplication.Location = new Point(270, 259);
             btn_Multiplication.Name = "btn_Multiplication";
             btn_Multiplication.Size = new Size(68, 41);
@@ -156,6 +161,7 @@
             // btn_Input4
             // 
             btn_Input4.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Input4.ForeColor = Color.Blue;
             btn_Input4.Location = new Point(48, 306);
             btn_Input4.Name = "btn_Input4";
             btn_Input4.Size = new Size(68, 41);
@@ -166,6 +172,7 @@
             // btn_Input5
             // 
             btn_Input5.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Input5.ForeColor = Color.Blue;
             btn_Input5.Location = new Point(122, 306);
             btn_Input5.Name = "btn_Input5";
             btn_Input5.Size = new Size(68, 41);
@@ -176,6 +183,7 @@
             // btn_Input6
             // 
             btn_Input6.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Input6.ForeColor = Color.Blue;
             btn_Input6.Location = new Point(196, 306);
             btn_Input6.Name = "btn_Input6";
             btn_Input6.Size = new Size(68, 41);
@@ -186,6 +194,7 @@
             // btn_Minus
             // 
             btn_Minus.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Minus.ForeColor = Color.Red;
             btn_Minus.Location = new Point(270, 306);
             btn_Minus.Name = "btn_Minus";
             btn_Minus.Size = new Size(68, 41);
@@ -196,6 +205,7 @@
             // btn_Input1
             // 
             btn_Input1.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Input1.ForeColor = Color.Blue;
             btn_Input1.Location = new Point(48, 353);
             btn_Input1.Name = "btn_Input1";
             btn_Input1.Size = new Size(68, 41);
@@ -206,6 +216,7 @@
             // btn_Input2
             // 
             btn_Input2.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Input2.ForeColor = Color.Blue;
             btn_Input2.Location = new Point(122, 353);
             btn_Input2.Name = "btn_Input2";
             btn_Input2.Size = new Size(68, 41);
@@ -216,6 +227,7 @@
             // btn_Input3
             // 
             btn_Input3.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Input3.ForeColor = Color.Blue;
             btn_Input3.Location = new Point(196, 353);
             btn_Input3.Name = "btn_Input3";
             btn_Input3.Size = new Size(68, 41);
@@ -227,6 +239,7 @@
             // btn_Plus
             // 
             btn_Plus.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Plus.ForeColor = Color.Red;
             btn_Plus.Location = new Point(270, 353);
             btn_Plus.Name = "btn_Plus";
             btn_Plus.Size = new Size(68, 41);
@@ -247,6 +260,7 @@
             // btn_Input0
             // 
             btn_Input0.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            btn_Input0.ForeColor = Color.Blue;
             btn_Input0.Location = new Point(122, 397);
             btn_Input0.Name = "btn_Input0";
             btn_Input0.Size = new Size(68, 41);

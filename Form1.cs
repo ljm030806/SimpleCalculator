@@ -33,8 +33,11 @@ namespace SimpleCalculator
             btn_Multiplication.Click += OperatorButton_Click;
             btn_Division.Click += OperatorButton_Click;
 
-            // 결과(=) 버튼 연결 (초기화 버튼 연결 부분 삭제됨)
+            // 결과(=) 및 삭제 관련 버튼 연결
             btn_InputEquals.Click += EqualsButton_Click;
+            btn_C.Click += ClearButton_Click;
+            btn_CE.Click += ClearEntryButton_Click;
+            btn_Del.Click += DeleteButton_Click;
         }
 
         // 공통 숫자 버튼 클릭 이벤트 핸들러
@@ -91,7 +94,6 @@ namespace SimpleCalculator
                         case "-": _firstOperand -= tempOperand; break;
                         case "X": case "*": _firstOperand *= tempOperand; break;
                         case "÷": case "/": 
-                            // 0으로 나눗셈 방지 처리 제거됨
                             _firstOperand /= tempOperand;
                             break;
                     }
@@ -133,7 +135,6 @@ namespace SimpleCalculator
                         break;
                     case "÷":
                     case "/":
-                        // 0으로 나눗셈 에러 창 띄우는 로직 제거됨
                         result = _firstOperand / secondOperand;
                         break;
                 }
@@ -145,6 +146,53 @@ namespace SimpleCalculator
                 _currentOperator = ""; 
                 _isNewEntry = true;    
                 _isCalculated = true;  
+            }
+        }
+
+        // C (Clear) 전체 초기화 버튼 클릭 이벤트
+        private void ClearButton_Click(object? sender, EventArgs e)
+        {
+            txt_Result.Text = "0";
+            txt_Cause.Text = ""; 
+            _firstOperand = 0;
+            _currentOperator = "";
+            _isNewEntry = true;
+            _isCalculated = false;
+        }
+
+        // CE (Clear Entry) 현재 입력 공간만 "0"으로 초기화
+        private void ClearEntryButton_Click(object? sender, EventArgs e)
+        {
+            if (txt_Cause.Text.EndsWith(txt_Result.Text))
+            {
+                txt_Cause.Text = txt_Cause.Text.Substring(0, txt_Cause.Text.Length - txt_Result.Text.Length);
+            }
+            
+            txt_Result.Text = "0";
+            _isNewEntry = true;
+        }
+
+        // Del (백스페이스) 한 글자 지우기
+        private void DeleteButton_Click(object? sender, EventArgs e)
+        {
+            if (_isCalculated) return;
+
+            if (txt_Result.Text.Length > 0)
+            {
+                txt_Result.Text = txt_Result.Text.Remove(txt_Result.Text.Length - 1);
+                
+                // txt_Cause에서도 마지막 입력 제거
+                if (txt_Cause.Text.Length > 0)
+                {
+                    txt_Cause.Text = txt_Cause.Text.Remove(txt_Cause.Text.Length - 1);
+                }
+            }
+            
+            // 모든 글자가 지워지면 0으로 복구
+            if (txt_Result.Text == "" || txt_Result.Text == "-")
+            {
+                txt_Result.Text = "0";
+                _isNewEntry = true;
             }
         }
 
