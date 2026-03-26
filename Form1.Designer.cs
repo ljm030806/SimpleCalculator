@@ -320,7 +320,7 @@
             // btn_Parenthesis1
             // 
             btn_Parenthesis1.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            btn_Parenthesis1.Location = new Point(79, 442);
+            btn_Parenthesis1.Location = new Point(78, 444);
             btn_Parenthesis1.Name = "btn_Parenthesis1";
             btn_Parenthesis1.Size = new Size(68, 41);
             btn_Parenthesis1.TabIndex = 26;
